@@ -1,0 +1,146 @@
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hyperledger Fabric Watch Movement Application</title>
+    <link rel="icon" href="favicon.png" type="image/gif">
+
+    <!-- require jquery and bootstrap scripts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+    
+    <!-- adding style here -->
+    <style type="text/css">
+      header{
+        background-color: lightgray;
+        font-size:20px;
+        padding:15px;
+      }
+      header, .form-group{
+        margin-bottom: 3%;
+      }
+      .form-group{
+        width:50%;
+      }
+      #body{
+        margin-left:3%;
+        margin-right:3%;
+      }
+      .form-control{
+        margin: 8px;
+      }
+      #right_header{
+        width:20%;
+        font-size:15px;
+        margin-right:0px;
+      }
+      #left_header{
+        margin-left:0;
+        width:40%;
+        display:inline-block;
+      } 
+      #id {
+        width:49%;
+        display: inline-block;
+      }
+      table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+      }
+      td, th {
+          border: 1px solid #dddddd;
+          text-align: left;
+          padding: 8px;
+      }
+      tr:nth-child(even) {
+          background-color: #dddddd;
+      }
+    </style>
+  </head>
+  <body ng-app="application" ng-controller="appController">
+    <header>
+      <div id="left_header">Hyperledger Fabric Watch movement Application</div>
+      <i id="right_header">Blockchain Application for Hyperledger Fabric</i>
+    </header>
+
+    <div id="body">
+      <div class="form-group">
+        <label>Query All Watch Movements</label>
+        <p><input id="queryAllWatchMovement" type="submit" value="Query" class="btn btn-primary" ng-click="queryAllWatchMovement()"></p>
+      </div>
+ 
+      <table id="all_watchmovement" class="table" align="center">
+
+        <tr>
+          <th>ID</th>
+          <th>Timestamp</th>
+          <th>Holder</th>
+          <th>Movement Location <br>(Longitude, Latitude)</th>
+          <th>Transporter</th>
+        </tr>
+
+        <tr ng-repeat="watchmovement in all_watchmovement">
+          <td>{{watchmovement.Key}}</td>
+          <td>{{watchmovement.timestamp}}</td>
+          <td>{{watchmovement.holder}}</td>
+          <td>{{watchmovement.location}}</td>
+          <td>{{watchmovement.transporter}}</td>
+        </tr>
+      </table>
+
+      <div class="form-group">
+        <label>Query a Specific Watch Movement</label><br>
+        <h5 style="color:red;margin-bottom:2%" id="error_query">Error: Please enter a valid Watch Movement Id</h5>
+        
+        Enter a watch movement number: <input id="createName" class="form-control" type="text" placeholder="Ex: 3" ng-model="watchmovement_id">
+        <input id="querySubmit" type="submit" value="Query" class="btn btn-primary" ng-click="queryWatchMovement()">
+      </div>
+
+      <table id="query_watchmovement" class="table" align="center">
+
+        <tr>
+          <th>Timestamp</th>
+          <th>Holder</th>
+          <th>Movement Location <br>(Longitude, Latitude)</th>
+          <th>Transporter</th>
+        </tr>
+
+        <tr>
+          <td>{{query_watchmovement.timestamp}}</td>
+          <td>{{query_watchmovement.holder}}</td>
+          <td>{{query_watchmovement.location}}</td>
+          <td>{{query_watchmovement.transporter}}</td>
+        </tr>
+      </table>
+
+      <div class="form-group">
+        <label>Create Watch Movement Record</label>
+        <h5 style="color:green;margin-bottom:2%" id="success_create">Success! Tx ID: {{create_watchmovement}}</h5>
+        <br>
+        Enter watch movement id: <input class="form-control" type="text" placeholder="Ex: 11" ng-model="watchmovement.id">
+        Enter name of the transporter: <input class="form-control" type="text" placeholder="Ex: 0239L" ng-model="watchmovement.transporter">
+        Enter longitude: <input id="createName" class="form-control" type="text" placeholder="Ex: 28.012" ng-model="watchmovement.longitude"> 
+        Enter latitude: <input id="createName" class="form-control" type="text" placeholder="Ex: 150.405" ng-model="watchmovement.latitude">
+        Enter timestamp: <input class="form-control" type="text" placeholder="Ex: 4982342301" ng-model="watchmovement.timestamp">
+        Enter name of holder: <input class="form-control" type="text" placeholder="Ex: Vivienne" ng-model="watchmovement.holder">
+        <input id="createSubmit" type="submit" value="Create" class="btn btn-primary" ng-click="recordWatchMovement()"> 
+      </div>
+
+      <div class="form-group">
+        <label>Change Watch Movement Holder</label><br>
+        <h5 style="color:green;margin-bottom:2%" id="success_holder">Success! Tx ID: {{change_holder}}</h5>
+        <h5 style="color:red;margin-bottom:2%" id="error_holder">Error: Please enter a valid Watch Movement Id</h5>
+        Enter a movement id between 1 and 10: <input class="form-control" name="assetSelect" placeholder="Ex: 1" ng-model="holder.id">
+        Enter name of new holder: <input class="form-control" name="assetSelect" placeholder="Ex: Victor" ng-model="holder.name">
+        <input id="transferSubmit" type="submit" value="Change" class="btn btn-primary" ng-click="changeHolder()">
+      </div>
+
+    </div>
+  </body>
+    <!-- requiring the angular page -->
+    <script type="text/javascript" src="app.js"> </script>
+</html>
